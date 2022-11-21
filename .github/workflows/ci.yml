@@ -1,0 +1,15 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    uses: aaronmallen/pw.aaronmallen.me/.github/workflows/lint.yml@main
+  test:
+    uses: aaronmallen/pw.aaronmallen.me/.github/workflows/test.yml@main

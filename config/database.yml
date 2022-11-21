@@ -1,0 +1,22 @@
+primary_defaults: &primary_defaults
+  adapter: postgresql
+  encoding: unicode
+  host: <%= ENV['PASSWORD_PUSHER_DATABASE_HOST'] %>
+  password: <%= ENV['PASSWORD_PUSHER_DATABASE_PASSWORD'] %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV['PASSWORD_PUSHER_DATABASE_USER'] %>
+
+development:
+  primary:
+    <<: *primary_defaults
+    database: password_pusher_dev
+
+test:
+  primary:
+    <<: *primary_defaults
+    database: password_pusher_test
+
+production:
+  primary:
+    <<: *primary_defaults
+    database: password_pusher

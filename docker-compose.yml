@@ -1,0 +1,64 @@
+version: '3.8'
+
+x-database_host: &database_host db
+x-database_password: &database_password ${DATABASE_PASSWORD:-password}
+x-database_port: &database_port ${DATABASE_PORT:-5432}
+x-database_user: &database_user ${DATABASE_USER:-postgres}
+x-rails_bind: &rails_bind ${RAILS_BIND:-0.0.0.0}
+x-rails_env: &rails_env ${RAILS_ENV:-development}
+x-rails_port: &rails_port ${RAILS_PORT:-3000}
+
+x-rails_service: &rails_service
+  build:
+    context: .
+    dockerfile: .docker/rails/Dockerfile
+    target: dev
+  depends_on:
+    - db
+  environment:
+    PASSWORD_PUSHER_DATABASE_HOST: *database_host
+    PASSWORD_PUSHER_DATABASE_PASSWORD: *database_password
+    PASSWORD_PUSHER_DATABASE_USER: *database_user
+    RAILS_BIND: *rails_bind
+    RAILS_ENV: *rails_env
+    RAILS_PORT: *rails_port
+  volumes:
+    - .:/var/www/app
+    - bundler_data:/usr/local/bundle
+
+services:
+  app:
+    <<: *rails_service
+    command: .docker/rails/bin/serve
+    container_name: password-pusher-app
+    ports:
+      - mode: host
+        protocol: tcp
+        published: *rails_port
+        target: *rails_port
+
+  db:
+    container_name: password-pusher-db
+    environment:
+      PGDATA: /var/lib/postgresql/data/password-pusher
+      POSTGRES_PASSWORD: *database_password
+      POSTGRES_USER: *database_user
+    healthcheck:
+      interval: 10s
+      retries: 5
+      test: sh -c "pg_isready -U $${{POSTGRES_USER}}"
+      timeout: 5s
+    image: postgres:15-alpine
+    ports:
+      - mode: host
+        protocol: tcp
+        published: *database_port
+        target: 5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  bundler_data:
+    name: password-pusher-bundler-data
+  db_data:
+    name: password-pusher-db-data
