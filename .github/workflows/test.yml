@@ -1,0 +1,38 @@
+name: Test
+
+on:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+    env:
+      PASSWORD_PUSHER_DATABASE_HOST: localhost
+      PASSWORD_PUSHER_DATABASE_PASSWORD: password
+      PASSWORD_PUSHER_DATABASE_PORT: 5432
+      PASSWORD_PUSHER_DATABASE_USER: postgres
+      RAILS_ENV: test
+    steps:
+      - name: Setup Branch
+        uses: actions/checkout@v3
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+
+      - name: Setup Database
+        run: bin/rails db:setup
+
+      - name: Run Unit Tests
+        run: bundle exec rspec --format documentation --color --order rand

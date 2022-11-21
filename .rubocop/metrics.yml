@@ -1,0 +1,17 @@
+Metrics/AbcSize:
+  Exclude:
+    - db/migrate/**/*.rb
+Metrics/BlockLength:
+  Exclude:
+    - config/environments/**/*.rb
+    - db/migrate/**/*.rb
+    - spec/**/*_spec.rb
+    - spec/factories/**/*.rb
+Metrics/ClassLength:
+  Exclude:
+    - db/migrate/**/*.rb
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/**/*.rb
+Metrics/ParameterLists:
+  Enabled: false
