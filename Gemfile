@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.1'
 
 gem 'bcrypt', '~> 3.1'
-gem 'bootsnap', '~> 1.14', require: false
+gem 'bootsnap', '~> 1.15', require: false
 gem 'bulma-rails', '~> 0.9'
 gem 'importmap-rails', '~> 1.1'
 gem 'pg', '~> 1.4'
