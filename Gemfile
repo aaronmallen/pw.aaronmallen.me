@@ -13,7 +13,7 @@ gem 'pg', '~> 1.4'
 gem 'puma', '~> 6.0'
 gem 'rails', '~> 7.0.4'
 gem 'sprockets-rails', '~> 3.4'
-gem 'stimulus-rails', '~> 1.1'
+gem 'stimulus-rails', '~> 1.2'
 gem 'turbo-rails', '~> 1.3'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
